@@ -5,37 +5,37 @@ use frame_support::{
 	decl_event, 
 	decl_module, 
 	decl_storage, 
-	ensure, 
-	dispatch::DispatchResult,
+	//ensure, 
+	//dispatch::DispatchResult,
 	traits::{
 		Currency, 
-		Get,
+		//Get,
 		ReservableCurrency, 
-		ExistenceRequirement::AllowDeath
+		//ExistenceRequirement::AllowDeath
 	},
 };
 use frame_system::{
 	self as system, 
-	ensure_signed,
-	ensure_root
+	//ensure_signed,
+	//ensure_root
 };
 use parity_scale_codec::{
 	Decode, 
 	Encode
 };
-use sp_runtime::{
-	traits::{AccountIdConversion, Saturating, Zero},
-	ModuleId,
-};
+// use sp_runtime::{
+// 	traits::{AccountIdConversion, Saturating, Zero},
+// 	ModuleId,
+// };
 use sp_std::prelude::*;
-use pallet_token as Token;
+//use pallet_token as Token;
 
 
 
 #[cfg(test)]
 mod tests;
 
-const PALLET_ID: ModuleId = ModuleId(*b"pools888");
+//const PALLET_ID: ModuleId = ModuleId(*b"pools888");
 
 
 pub trait Trait: system::Trait  + pallet_token::Trait {
@@ -43,27 +43,25 @@ pub trait Trait: system::Trait  + pallet_token::Trait {
 	type Currency: ReservableCurrency<Self::AccountId>;
 }
 
-
-
 pub type PoolIndex = u128;
 type AccountIdOf<T> = <T as system::Trait>::AccountId;
 type BalanceOf<T> = <<T as Trait>::Currency as Currency<AccountIdOf<T>>>::Balance;
-//type PoolInfoOf<T> = PoolInfo<AccountIdOf<T>, <T as system::Trait>::BlockNumber>;
+type PoolInfoOf<T> = PoolInfo<AccountIdOf<T>, <T as system::Trait>::BlockNumber>;
 
-// #[derive(Encode, Decode, Default, PartialEq, Eq)]
-// #[cfg_attr(feature = "std", derive(Debug))]
-// pub struct PoolInfo<AccountId, BlockNumber> {
-// 	pool_type = u32, // 0 means capital pool, 1 means liquidity pool
-// 	banker: AccountId,
-// 	created: BlockNumber
-// }
+#[derive(Encode, Decode, Default, PartialEq, Eq)]
+#[cfg_attr(feature = "std", derive(Debug))]
+pub struct PoolInfo<AccountId, BlockNumber> {
+	pool_type: u32, // 0 means capital pool, 1 means liquidity pool
+	banker: AccountId,
+	created: BlockNumber
+}
 
 
 decl_storage! {
 	trait Store for Module<T: Trait> as Store {
 
-		// Pools get(fn pools): map hasher(blake2_128_concat) PoolIndex => Option<PoolInfoOf<T>>;
-		// PoolCount get(fn pool_count): PoolIndex;
+		Pools get(fn pools): map hasher(blake2_128_concat) PoolIndex => Option<PoolInfoOf<T>>;
+		PoolCount get(fn pool_count): PoolIndex;
 
 	}
 }
@@ -139,7 +137,7 @@ decl_module! {
 		fn on_finalize(now: T::BlockNumber) {
 			
 			let _now = now;
-			Self::play();
+			//Self::play();
 
 		}
 
@@ -148,9 +146,9 @@ decl_module! {
 
 impl<T: Trait> Module<T> {
 	
-	fn play() -> () {
-		let total_supply = <Token::Module<T>>::tengok_ni(0);
-	}
+	// fn play() -> () {
+	// 	let total_supply = <Token::Module<T>>::tengok_ni(0);
+	// }
 
 	// pub fn pool_account_id(index: PoolIndex) -> T::AccountId {
 	// 	PALLET_ID.into_sub_account(index)
